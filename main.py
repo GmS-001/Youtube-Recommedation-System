@@ -9,20 +9,22 @@ from dotenv import load_dotenv
 
 load_dotenv()
 YOUTUBEAPIKEY = os.getenv('YOUTUBEAPIKEY')
-
 video_list_id = "18B23YuS_XFyJZNE-c1uwzqmZhpYLBFnY"
-similarity_id = "1wFXPr0ZfbiZVsYJdMwGhcEsXDeGC9m9F"
+similarity_id = "1OJwiL3nFFlWuQjwiPBebCyHqBKVF_qLh"
 if not os.path.exists("video_list_dict.pkl"):
     gdown.download(f"https://drive.google.com/uc?id={video_list_id}", "video_list_dict.pkl", quiet=False)
 
-if not os.path.exists("similarity.npy"):
-    gdown.download(f"https://drive.google.com/uc?id={similarity_id}", "similarity.npy", quiet=False)
+if not os.path.exists("similarity_compressed.npz"):
+    gdown.download(f"https://drive.google.com/uc?id={similarity_id}", "similarity_compressed.npz", quiet=False)
+
+data = np.load("similarity_compressed.npz")
+similarity = data["arr_0"]
 
 df_india = pickle.load(open('video_list_dict.pkl', 'rb'))
 if isinstance(df_india, dict):
     df_india = pd.DataFrame.from_dict(df_india)
 
-similarity = np.load('similarity.npy', mmap_mode='r')
+# similarity = np.load('similarity.npy', mmap_mode='r')
 
 
 def get_poster(video_id):

@@ -3,6 +3,7 @@ import streamlit as st
 import pandas as pd
 import gdown
 import os
+import numpy as np
 from googleapiclient.discovery import build
 from dotenv import load_dotenv
 
@@ -10,20 +11,16 @@ load_dotenv()
 YOUTUBEAPIKEY = os.getenv('YOUTUBEAPIKEY')
 
 video_list_id = "18B23YuS_XFyJZNE-c1uwzqmZhpYLBFnY"
-similarity_id = "1kzvRoE0Ie6pQuPh2gHgs2bNvG-02BJ0v"
+similarity_id = "1wFXPr0ZfbiZVsYJdMwGhcEsXDeGC9m9F"
 if not os.path.exists("video_list_dict.pkl"):
     gdown.download(f"https://drive.google.com/uc?id={video_list_id}", "video_list_dict.pkl", quiet=False)
 
-if not os.path.exists("similarity.pkl"):
-    gdown.download(f"https://drive.google.com/uc?id={similarity_id}", "similarity.pkl", quiet=False)
+if not os.path.exists("similarity.npy"):
+    gdown.download(f"https://drive.google.com/uc?id={similarity_id}", "similarity.npy", quiet=False)
+
     
 def get_poster(video_id):
-    api_service_name = "youtube"
-    api_version = "v3"
-    api_key = YOUTUBEAPIKEY
-
-    youtube = build(api_service_name, api_version, developerKey=api_key)
-
+    youtube = build("youtube", "v3", developerKey=YOUTUBEAPIKEY)
     request = youtube.videos().list(
         part="snippet,contentDetails,statistics",
         id=video_id

@@ -1,6 +1,7 @@
 import pickle
 import streamlit as st
 import pandas as pd
+import gdown
 import os
 from googleapiclient.discovery import build
 from dotenv import load_dotenv
@@ -8,6 +9,14 @@ from dotenv import load_dotenv
 load_dotenv()
 YOUTUBEAPIKEY = os.getenv('YOUTUBEAPIKEY')
 
+video_list_id = "18B23YuS_XFyJZNE-c1uwzqmZhpYLBFnY"
+similarity_id = "1kzvRoE0Ie6pQuPh2gHgs2bNvG-02BJ0v"
+if not os.path.exists("video_list_dict.pkl"):
+    gdown.download(f"https://drive.google.com/uc?id={video_list_id}", "video_list_dict.pkl", quiet=False)
+
+if not os.path.exists("similarity.pkl"):
+    gdown.download(f"https://drive.google.com/uc?id={similarity_id}", "similarity.pkl", quiet=False)
+    
 def get_poster(video_id):
     api_service_name = "youtube"
     api_version = "v3"

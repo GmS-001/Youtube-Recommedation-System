@@ -18,7 +18,13 @@ if not os.path.exists("video_list_dict.pkl"):
 if not os.path.exists("similarity.npy"):
     gdown.download(f"https://drive.google.com/uc?id={similarity_id}", "similarity.npy", quiet=False)
 
-    
+df_india = pickle.load(open('video_list_dict.pkl', 'rb'))
+if isinstance(df_india, dict):
+    df_india = pd.DataFrame.from_dict(df_india)
+
+similarity = np.load('similarity.npy', mmap_mode='r')
+
+
 def get_poster(video_id):
     youtube = build("youtube", "v3", developerKey=YOUTUBEAPIKEY)
     request = youtube.videos().list(
@@ -51,12 +57,7 @@ def recommend(movie):
 
 st.header('YouTube Video Recommendation System')
 
-# Load data
-df_india = pickle.load(open('video_list_dict.pkl', 'rb'))
-if isinstance(df_india, dict):
-    df_india = pd.DataFrame.from_dict(df_india)
 
-similarity = pickle.load(open('similarity.pkl', 'rb'))
 
 # Prepare video list
 video_list = df_india['title'].tolist()
